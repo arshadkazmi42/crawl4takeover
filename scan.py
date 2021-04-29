@@ -120,7 +120,7 @@ def _parse_urls(soup, hostname, tags, urls, links=None):
     for tag in LINK_TAGS:
 
         for link in soup.find_all(tag):
-            
+
             url = link.get(LINK_TAGS[tag])
             _process_link(hostname, url, urls, links)
 
@@ -181,44 +181,6 @@ def _start_scan(hostname, urls, links):
                 _parse_urls(soup, hostname, IMAGE_TAGS, urls)
             except:
                 _print(f'Exception while scanning url {url}')
-
-
-
-# def _start_scan(hostname, urls, links, index):
-#     if len(links) == 0:
-#         return
-
-#     if len(links) <= index:
-#         return
-
-#     if urls[links[index]]:
-#         return _start_scan(hostname, urls, links, index + 1)
-
-#     url = links[index]
-
-#     print(f'Scanning for {url}')
-
-#     response = _get_url_result(url)
-
-#     # _print(response)
-
-#     if not response:
-#         return _start_scan(hostname, urls, links, index + 1)
-
-#     # Search URLs using regex for CSS
-#     _parse_urls_with_regex(response, hostname, urls, links)
-
-#     try:
-#         soup = BeautifulSoup(response, 'html.parser')
-
-#         _parse_urls(soup, hostname, LINK_TAGS, urls, links)
-#         _parse_urls(soup, hostname, IMAGE_TAGS, urls)
-#     except:
-#         _print(f'Exception while scanning url {url}')
-
-#     return _start_scan(hostname, urls, links, index + 1)
-    
-
 
 
 # MAIN CODE
