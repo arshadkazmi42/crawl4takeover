@@ -9,7 +9,7 @@ def is_image_url(url):
     return (mimetype and (mimetype.startswith('image') or mimetype.startswith('video')))
 
 
-url='https://magicleap.com/assets/fonts/lomino/lomino-bold.woff'
+url='https://static-assets.mapbox.com/www/media-kit/mapbox_all-image-collections.zip'
 v = parse.urlparse(url).path
 print(v)
 print(is_image_url(v))
