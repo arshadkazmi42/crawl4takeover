@@ -114,7 +114,7 @@ def _capture_url(hostname, url):
         _print('\n===================\n')
 
     if status_code == 404:
-        print(f'|---BROKEN---| {url}')
+        print(f'|-BROKEN-| {url}')
         _write_to_file(hostname, BROKEN_LINKS_FILENAME, url)
     else:
         print(f'|---OK---| {url}')
