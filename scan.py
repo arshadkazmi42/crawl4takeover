@@ -6,17 +6,20 @@ import sys
 import mimetypes
 from bs4 import BeautifulSoup
 from urllib import parse
+from pathlib import Path
 
 DEBUG = False
 # Enable to filter urls by this list FILTER_URLS
 ENABLE_FILTER = True
+RESULTS_DIRECTORY = 'results'
 FILENAME = 'output.txt'
 BROKEN_LINKS_FILENAME = 'broken.txt'
 REGEX = r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)'
 MIME_TYPES = ['audio', 'video', 'image']
 LINK_TAGS = { 'a': 'href', 'link': 'href', 'script': 'src' }
 IMAGE_TAGS = {'img': 'src'}
-FILTER_URLS = [ 'amazonaws', 'herokuapp', 'netlify', 'storage.googleapis.com', 'github', 'zendesk' ]
+FILTER_URLS = [ 'amazonaws', 'herokuapp', 'netlify', 'storage.googleapis.com', 'github', 'zendesk', 'bitbucket', 
+    'fastly.net', 'readme.io', 'myshopify', 'surge.sh', 'mystrikingly.com']
 
 
 
@@ -61,6 +64,7 @@ def _get_url_result(url):
 def _clean_url(url):
     url = url.replace('\'', '')
     url = url.replace('"', '')
+    url = url.replace('&quot', '')
 
     return url
 
@@ -74,7 +78,7 @@ def _get_status_code(url):
         return
 
 
-def _validate_and_write(url):
+def _validate_and_write(hostname, url):
 
     if not url:
         return None
@@ -93,26 +97,28 @@ def _validate_and_write(url):
     if ENABLE_FILTER:
         for value in FILTER_URLS:
             if value in url:
-                _capture_url(url)
+                _capture_url(hostname, url)
     else:
-        _capture_url(url) 
+        _capture_url(hostname, url) 
 
     return True
 
 
-def _capture_url(url):
+def _capture_url(hostname, url):
 
     status_code = _get_status_code(url)
 
     if status_code == 404:
         _print('\n========== FOUND BROKEN LINK => TAKEOVER MIGHT BE POSSIBLE =========\n')
-        print(f'{url} => {status_code}')
+        _print(f'{url} => {status_code}')
         _print('\n===================\n')
 
     if status_code == 404:
-        _write_to_file(BROKEN_LINKS_FILENAME, url)
+        print(f'|---BROKEN---| {url}')
+        _write_to_file(hostname, BROKEN_LINKS_FILENAME, url)
     else:
-        _write_to_file(FILENAME, url)
+        print(f'|---OK---| {url}')
+        _write_to_file(hostname, FILENAME, url)
 
 
 def _parse_urls(soup, hostname, tags, urls, links=None):
@@ -139,7 +145,7 @@ def _process_link(hostname, url, urls, links):
 
     _print(url)
 
-    is_valid = _validate_and_write(url)
+    is_valid = _validate_and_write(hostname, url)
 
     if is_valid:
         if url not in urls.keys():
@@ -149,8 +155,9 @@ def _process_link(hostname, url, urls, links):
             links.append(url)       
 
 
-def _write_to_file(filename, line):
-    f = open(f'{filename}', 'a')
+def _write_to_file(foldername, filename, line):
+    directory = f'{RESULTS_DIRECTORY}/{foldername}'
+    f = open(f'{directory}/{filename}', 'a')
     f.write(f'{line}\n')  # python will convert \n to os.linesep
     f.close()
 
@@ -198,5 +205,8 @@ hostname = hostname.split('.')
 if len(hostname) > 1:
     hostname = f'{hostname[len(hostname) - 2]}.{hostname[len(hostname) - 1]}'
 
+# Create directory for the host
+directory = f'{RESULTS_DIRECTORY}/{hostname}'
+Path(directory).mkdir(parents=True, exist_ok=True)
 
 _start_scan(hostname, urls, links)
