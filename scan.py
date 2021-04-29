@@ -15,7 +15,7 @@ RESULTS_DIRECTORY = 'results'
 FILENAME = 'output.txt'
 BROKEN_LINKS_FILENAME = 'broken.txt'
 REGEX = r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)'
-MIME_TYPES = ['audio', 'video', 'image']
+MIME_TYPES = ['audio', 'video', 'image', 'font']
 LINK_TAGS = { 'a': 'href', 'link': 'href', 'script': 'src' }
 IMAGE_TAGS = {'img': 'src'}
 FILTER_URLS = [ 'amazonaws', 'herokuapp', 'netlify', 'storage.googleapis.com', 'github', 'zendesk', 'bitbucket', 
