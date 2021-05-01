@@ -20,6 +20,6 @@ global_config = {
     },
     'filters': {
         'enable': True,
-        'tags': [ 'amazonaws.com', 'herokuapp.com', 'netlify.app', 'storage.googleapis.com', 'github.io', 'zendesk.com', 'bitbucket.org', 'fastly.net', 'readme.io', 'myshopify.com', 'surge.sh', 'mystrikingly.com']
+        'tags': [ 'github.com', 'amazonaws.com', 'herokuapp.com', 'netlify.app', 'storage.googleapis.com', 'github.io', 'zendesk.com', 'bitbucket.org', 'fastly.net', 'readme.io', 'myshopify.com', 'surge.sh', 'mystrikingly.com']
     }
 }

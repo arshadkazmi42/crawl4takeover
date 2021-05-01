@@ -127,6 +127,10 @@ class Helper:
         if url.startswith('javascript:') or url.startswith('mailto:') or url.startswith('#'):
             return None
 
+        # Ignore Github Pull Request / Issue URL
+        if url.startswith('https://github.com') and ('/issues/' in url or '/pull/' in url):
+            return None
+
         if not url.startswith('http'):
             url = cls.merge_url_path(cls.start_url, url)
 
@@ -250,7 +254,7 @@ class Helper:
         try:
             if not url.startswith('https://github.com'):
                 return
-                
+
             url_split = url.split('/')
             path_split = path.split('/')
 
