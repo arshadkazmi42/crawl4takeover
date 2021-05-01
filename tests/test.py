@@ -16,7 +16,8 @@ def read_file(filename):
 
 
 
-url='https://static-assets.mapbox.com/www/media-kit/mapbox_all-image-collections.css'
+url='https://static-assets.mapbox.com/www/media-kit/mapbox_all-image-collections.pkg'
+
 v = parse.urlparse(url).path
 print(v)
 print(is_image_url(v))

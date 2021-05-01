@@ -26,7 +26,9 @@ class Crawler:
 
         for url in self.links:
 
-            print(f'Scanning for {url}')
+            print_line = f'Scanning for {url}'
+            print(print_line)
+            Helper.write_to_file(self.hostname, global_config['file_names']['process'], print_line)
 
             response = Helper.get_url_result(url)
 
@@ -34,13 +36,14 @@ class Crawler:
 
                 Helper.parse_urls_with_regex(response, self.hostname, self.urls, self.links)
 
-                # try:
-                soup = BeautifulSoup(response, 'html.parser')
+                try:
+                    soup = BeautifulSoup(response, 'html.parser')
 
-                link_tags = global_config['tags']['link']
-                image_tags = global_config['tags']['image']
+                    link_tags = global_config['tags']['link']
+                    image_tags = global_config['tags']['image']
 
-                Helper.parse_urls(self.hostname, soup, link_tags, self.urls, self.links)
-                Helper.parse_urls(self.hostname, soup, image_tags, self.urls)
-                # except:
-                    # Helper.print(f'Exception while scanning url {url}')
+                    Helper.parse_urls(self.hostname, soup, link_tags, self.urls, self.links)
+                    Helper.parse_urls(self.hostname, soup, image_tags, self.urls)
+                except Exception as e:
+                    print(f'Exception while scanning url {url}', e)
+                    

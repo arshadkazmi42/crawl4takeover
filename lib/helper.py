@@ -60,7 +60,7 @@ class Helper:
             return response.text
 
         except:
-            cls.print(f'Error making request call to {url}')
+            print(f'Error making request call to {url}')
             return
 
 
@@ -70,7 +70,7 @@ class Helper:
             response = requests.get(url, timeout=10)
             return response.status_code
         except:
-            cls.print(f'Error getting status code of {url}')
+            print(f'Error getting status code of {url}')
             return
 
 
@@ -153,10 +153,14 @@ class Helper:
             cls.print('\n===================\n')
 
         if status_code == 404:
-            print(f'|-BROKEN-| {url}')
+            print_line = f'|-BROKEN-| {url}'
+            print(print_line)
+            cls.write_to_file(hostname, global_config['file_names']['process'], print_line)
             cls.write_to_file(hostname, global_config['file_names']['broken_links'], url)
         else:
-            print(f'|---OK---| {url}')
+            print_line = f'|---OK---| {url}'
+            print(print_line)
+            cls.write_to_file(hostname, global_config['file_names']['process'], print_line)
             cls.write_to_file(hostname, global_config['file_names']['all_links'], url)   
 
 
@@ -222,6 +226,10 @@ class Helper:
     @classmethod
     def merge_url_path(cls, url, path):
 
+        merged_url = cls.merge_github_url(url, path)
+        if merged_url:
+            return merged_url
+
         if url.endswith('/') and path.startswith('/'):
             return f'{url}{path[1:]}'
         elif not url.endswith('/') and path.startswith('/'):
@@ -230,6 +238,30 @@ class Helper:
             return f'{url}{path}'
         else:
             return f'{url}/{path}'
+
+
+    # Exception for github
+    @classmethod
+    def merge_github_url(cls, url, path):
+
+        if not url or not path:
+            return
+
+        try:
+            if url.startswith('https://github.com'):
+                url_split = url.split('/')
+                path_split = path.split('/')
+
+            merge_url = 'https://github.com/'
+            if len(url_split) > 2 and len(path_split) > 2:
+                if (url_split[len(url_split) - 1] == path_split[2]) and (url_split[len(url_split) - 2] == path_split[1]):
+                    return f'{merge_url}{path_split}'
+
+            return
+        except Exception as e:
+            print('Error merging github url', url, path, e)
+            return
+
 
     
     @classmethod
