@@ -248,9 +248,11 @@ class Helper:
             return
 
         try:
-            if url.startswith('https://github.com'):
-                url_split = url.split('/')
-                path_split = path.split('/')
+            if not url.startswith('https://github.com'):
+                return
+                
+            url_split = url.split('/')
+            path_split = path.split('/')
 
             merge_url = 'https://github.com/'
             if len(url_split) > 2 and len(path_split) > 2:
