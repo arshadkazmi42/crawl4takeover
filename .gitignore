@@ -2,3 +2,5 @@ output.txt
 broken.txt
 results/*
 
+*/__pycache__/
+__pycache__/
