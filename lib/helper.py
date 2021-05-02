@@ -40,7 +40,7 @@ class Helper:
         url = url.replace('\'', '')
         url = url.replace('"', '')
         url = url.replace('&quot', '')
-        
+
         if url.startswith('..'):
             url.replace('..', '')
 
@@ -65,8 +65,9 @@ class Helper:
 
         cls.print(url)
         try:
-
-            response = requests.get(url, timeout=10)
+            
+            headers = global_config['request']['headers']
+            response = requests.get(url, headers=headers, timeout=10)
 
             if response.status_code != 200:
                 print(f'Failed with error code {response.status_code}')
@@ -82,7 +83,8 @@ class Helper:
     @classmethod
     def get_status_code(cls, url):
         try:
-            response = requests.get(url, timeout=10)
+            headers = global_config['request']['headers']
+            response = requests.get(url, headers=headers, timeout=10)
             return response.status_code
         except:
             print(f'Error getting status code of {url}')
