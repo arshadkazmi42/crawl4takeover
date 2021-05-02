@@ -12,6 +12,18 @@ class Helper:
 
 
     @classmethod
+    def init(cls, start_url):
+
+        cls.set_start_url(start_url)
+        cls.hostname = cls.get_hostname(cls.start_url)
+        cls.create_results_directory()
+
+        cls.write_to_file(global_config['file_names']['process'], '')
+        cls.write_to_file(global_config['file_names']['broken_links'], '')
+        cls.write_to_file(global_config['file_names']['all_links'], '')
+
+
+    @classmethod
     def set_start_url(cls, url):
         cls.start_url = url
 
@@ -75,18 +87,18 @@ class Helper:
 
 
     @classmethod
-    def parse_urls(cls, hostname, soup, tags, urls, links=None):
+    def parse_urls(cls, soup, tags, urls, links=None):
 
         for tag in tags:
 
             for link in soup.find_all(tag):
 
                 url = link.get(tags[tag])
-                cls.process_link(hostname, url, urls, links)
+                cls.process_link(url, urls, links)
 
 
     @classmethod
-    def parse_urls_with_regex(cls, text, hostname, urls, links):
+    def parse_urls_with_regex(cls, text, urls, links):
 
         regex = global_config['regex']['link']
         matches = [x.group() for x in re.finditer(regex, text)]
@@ -95,15 +107,15 @@ class Helper:
 
         for i in range(0, len(matches)):
             url = matches[i]
-            cls.process_link(hostname, url, urls, links)
+            cls.process_link(url, urls, links)
 
 
     @classmethod
-    def process_link(cls, hostname, url, urls, links):
+    def process_link(cls, url, urls, links):
 
         cls.print(url)
 
-        valid_url = cls.validate_and_write(hostname, url)
+        valid_url = cls.validate_and_write(url)
 
         cls.print(valid_url)
 
@@ -116,7 +128,7 @@ class Helper:
 
 
     @classmethod
-    def validate_and_write(cls, hostname, url):
+    def validate_and_write(cls, url):
 
         if not url:
             return None
@@ -139,15 +151,15 @@ class Helper:
         if global_config['filters']['enable']:
             for value in global_config['filters']['tags']:
                 if value in url:
-                    cls.capture_url(hostname, url)
+                    cls.capture_url(url)
         else:
-            cls.capture_url(hostname, url)
+            cls.capture_url(url)
 
         return url
 
     
     @classmethod
-    def capture_url(cls, hostname, url):
+    def capture_url(cls, url):
 
         status_code = cls.get_status_code(url)
 
@@ -159,18 +171,19 @@ class Helper:
         if status_code == 404:
             print_line = f'|-BROKEN-| {url}'
             print(print_line)
-            cls.write_to_file(hostname, global_config['file_names']['process'], print_line)
-            cls.write_to_file(hostname, global_config['file_names']['broken_links'], url)
+            cls.write_to_file(global_config['file_names']['process'], print_line)
+            cls.write_to_file(global_config['file_names']['broken_links'], url)
         else:
             print_line = f'|---OK---| {url}'
             print(print_line)
-            cls.write_to_file(hostname, global_config['file_names']['process'], print_line)
-            cls.write_to_file(hostname, global_config['file_names']['all_links'], url)   
+            cls.write_to_file(global_config['file_names']['process'], print_line)
+            cls.write_to_file(global_config['file_names']['all_links'], url)   
 
 
     @classmethod
-    def write_to_file(cls, foldername, filename, line):
+    def write_to_file(cls, filename, line):
 
+        foldername = cls.hostname
         directory = f'{global_config["directories"]["results"]}/{foldername}'
         file_path = f'{directory}/{filename}'
 
@@ -271,10 +284,10 @@ class Helper:
 
     
     @classmethod
-    def create_results_directory(cls, hostname):
+    def create_results_directory(cls):
 
         # Create directory for the host if not exists
-        directory = f'{global_config["directories"]["results"]}/{hostname}'
+        directory = f'{global_config["directories"]["results"]}/{cls.hostname}'
         Path(directory).mkdir(parents=True, exist_ok=True)
 
 
