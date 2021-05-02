@@ -12,7 +12,7 @@ global_config = {
         'link': r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)'
     },
     'mime_types': {
-        'media': ['audio', 'video', 'image', 'font', 'application/zip', 'application/x-debian-package', 'application/x-redhat-package-manager']
+        'media': ['audio', 'video', 'image', 'font', 'application/zip', 'application/x-debian-package', 'application/x-redhat-package-manager', 'application/x-apple-diskimage', 'application/x-msdos-program']
     },
     'tags': {
         'link': { 'a': 'href', 'link': 'href', 'script': 'src' },

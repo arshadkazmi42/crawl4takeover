@@ -40,6 +40,9 @@ class Helper:
         url = url.replace('\'', '')
         url = url.replace('"', '')
         url = url.replace('&quot', '')
+        
+        if url.startswith('..'):
+            url.replace('..', '')
 
         return url
 
