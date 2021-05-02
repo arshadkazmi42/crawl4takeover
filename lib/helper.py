@@ -42,7 +42,10 @@ class Helper:
         url = url.replace('&quot', '')
 
         if url.startswith('..'):
-            url.replace('..', '')
+            url = url[2:]
+
+        if url.startswith('/'):
+            url = url[1:]
 
         return url
 
