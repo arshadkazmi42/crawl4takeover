@@ -47,6 +47,9 @@ class Helper:
         if url.startswith('..'):
             url = url[2:]
 
+        if url.startswith('/..'):
+            url = url[3:]
+
         if url.startswith('/'):
             url = url[1:]
 
