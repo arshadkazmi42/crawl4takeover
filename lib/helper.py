@@ -66,7 +66,7 @@ class Helper:
             response = requests.get(url, timeout=10)
 
             if response.status_code != 200:
-                cls.print(f'Failed with error code {response.status_code}')
+                print(f'Failed with error code {response.status_code}')
                 return
                 
             return response.text
@@ -89,7 +89,7 @@ class Helper:
     @classmethod
     def parse_urls(cls, soup, tags, urls, links=None):
 
-        for tag in tags:
+        for tag in tags:            
 
             for link in soup.find_all(tag):
 
@@ -137,6 +137,10 @@ class Helper:
         url = cls.clean_url(url)
 
         if url.startswith('javascript:') or url.startswith('mailto:') or url.startswith('#'):
+            return None
+
+        # Ignore forum and community urls
+        if 'community' in url or 'forum' in url:
             return None
 
         # Ignore Github Pull Request / Issue URL
@@ -242,6 +246,11 @@ class Helper:
     
     @classmethod
     def merge_url_path(cls, url, path):
+
+        # In some HTML pages a href urls are used without https
+        # So checking if it starts with "//"
+        if path.startswith('//'):
+            return path
 
         merged_url = cls.merge_github_url(url, path)
         if merged_url:
