@@ -56,7 +56,7 @@ class Helper:
         if url.startswith('/..'):
             url = url[3:]
 
-        if url.startswith('/'):
+        if url.startswith('/') and not url.startswith('//'):
             url = url[1:]
 
         return url
@@ -275,7 +275,7 @@ class Helper:
         # In some HTML pages a href urls are used without https
         # So checking if it starts with "//"
         if path.startswith('//'):
-            return path
+            return f'https:{path}'
 
         merged_url = cls.merge_github_url(url, path)
         if merged_url:
