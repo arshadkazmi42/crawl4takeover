@@ -70,13 +70,19 @@ class Helper:
 
 
     @classmethod
+    def request(cls, url):
+
+        headers = global_config['request']['headers']
+        return requests.get(url, headers=headers, timeout=10)
+
+
+    @classmethod
     def get_url_result(cls, url):
 
         cls.print(url)
         try:
             
-            headers = global_config['request']['headers']
-            response = requests.get(url, headers=headers, timeout=10)
+            response = cls.request(url)
 
             if response.status_code != 200:
                 print(f'Failed with error code {response.status_code}')
@@ -92,8 +98,7 @@ class Helper:
     @classmethod
     def get_status_code(cls, url):
         try:
-            headers = global_config['request']['headers']
-            response = requests.get(url, headers=headers, timeout=10)
+            response = cls.request(url)
             return response.status_code
         except:
             print(f'Error getting status code of {url}')
@@ -103,7 +108,7 @@ class Helper:
     @classmethod
     def parse_urls(cls, soup, tags, urls, links=None):
 
-        for tag in tags:            
+        for tag in tags:
 
             for link in soup.find_all(tag):
 
