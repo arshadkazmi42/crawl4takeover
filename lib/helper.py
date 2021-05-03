@@ -16,7 +16,7 @@ class Helper:
     def init(cls, start_url):
 
         cls.set_start_url(start_url)
-        cls.hostname = cls.get_hostname(cls.start_url)
+        cls.domain = cls.get_domain(cls.start_url)
         cls.create_results_directory()
 
         cls.write_to_file(global_config['file_names']['process'], '')
@@ -212,7 +212,7 @@ class Helper:
     @classmethod
     def write_to_file(cls, filename, line):
 
-        foldername = cls.hostname
+        foldername = cls.domain
         directory = f'{global_config["directories"]["results"]}/{foldername}'
         file_path = f'{directory}/{filename}'
 
@@ -258,13 +258,13 @@ class Helper:
 
 
     @classmethod
-    def get_hostname(cls, url):
+    def get_domain(cls, url):
 
-        # Hostname will be used to identify next page urls of same domain
-        hostname = parse.urlparse(url).hostname
-        hostname = hostname.split('.')
-        if len(hostname) > 1:
-            return f'{hostname[len(hostname) - 2]}.{hostname[len(hostname) - 1]}'
+        
+        domain = parse.urlparse(url).netloc
+        domain = domain.split('.')
+        if len(domain) > 1:
+            return f'{domain[len(domain) - 2]}.{domain[len(domain) - 1]}'
         
         return
 
@@ -321,7 +321,7 @@ class Helper:
     def create_results_directory(cls):
 
         # Create directory for the host if not exists
-        directory = f'{global_config["directories"]["results"]}/{cls.hostname}'
+        directory = f'{global_config["directories"]["results"]}/{cls.domain}'
         Path(directory).mkdir(parents=True, exist_ok=True)
 
 
