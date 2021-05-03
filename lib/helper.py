@@ -2,6 +2,7 @@ import re
 import requests
 import sys
 import mimetypes
+from datetime import datetime
 from pathlib import Path
 from urllib import parse
 
@@ -32,6 +33,11 @@ class Helper:
     def print(cls, value): 
         if global_config['debug']:
             print(value)
+
+
+    @classmethod
+    def get_current_datetime(cls):
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
     @classmethod

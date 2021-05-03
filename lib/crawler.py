@@ -24,7 +24,7 @@ class Crawler:
 
         for url in self.links:
 
-            print_line = f'Scanning for {url}'
+            print_line = f'[{Helper.get_current_datetime()}] Scanning for {url}'
             print(print_line)
             Helper.write_to_file(global_config['file_names']['process'], print_line)
 
