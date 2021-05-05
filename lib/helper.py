@@ -96,7 +96,8 @@ class Helper:
                 
             return response.text
 
-        except:
+        except Exception as e:
+            print(e)
             print(f'Error making request call to {url}')
             return
 
@@ -259,14 +260,7 @@ class Helper:
 
     @classmethod
     def get_domain(cls, url):
-
-        
-        domain = parse.urlparse(url).netloc
-        domain = domain.split('.')
-        if len(domain) > 1:
-            return f'{domain[len(domain) - 2]}.{domain[len(domain) - 1]}'
-        
-        return
+        return parse.urlparse(url).netloc
 
     
     @classmethod
