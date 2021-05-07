@@ -46,6 +46,7 @@ class Helper:
         url = url.replace('\'', '')
         url = url.replace('"', '')
         url = url.replace('&quot', '')
+        url = url.replace('\\', '')
 
         if url.endswith('.'):
             url = url[:len(url)-1]
