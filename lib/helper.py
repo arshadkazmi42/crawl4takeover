@@ -43,20 +43,28 @@ class Helper:
     @classmethod
     def clean_url(cls, url):
 
+        # Removes single quote (')
         url = url.replace('\'', '')
+        # Removes double quote (")
         url = url.replace('"', '')
+        # Removes &quote
         url = url.replace('&quot', '')
+        # Removes (\)
         url = url.replace('\\', '')
 
+        # Remove dot(.) at the end of url
         if url.endswith('.'):
             url = url[:len(url)-1]
 
+        # Removes (..) at the start of url
         if url.startswith('..'):
             url = url[2:]
 
+        # Removes (/..) at the start of url
         if url.startswith('/..'):
             url = url[3:]
 
+        # Removes single (/) (if exist) from the start of url
         if url.startswith('/') and not url.startswith('//'):
             url = url[1:]
 
@@ -172,6 +180,10 @@ class Helper:
 
         # Ignore Github Pull Request / Issue URL
         if url.startswith('https://github.com') and ('/issues/' in url or '/pull/' in url):
+            return None
+
+        # TODO Create a config for this
+        if url.startswith('https://firebasestorage.googleapis.com'):
             return None
 
         if not url.startswith('http'):
