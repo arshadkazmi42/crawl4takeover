@@ -16,7 +16,7 @@ def read_file(filename):
 
 
 
-url='https://static-assets.mapbox.com/www/media-kit/mapbox_all-image-collections.zip'
+url='https://octoverse.github.com/static/github-octoverse-2020-productivity-report.pdf#page=10'
 
 v = parse.urlparse(url).path
 print(v)

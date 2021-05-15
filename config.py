@@ -19,7 +19,7 @@ global_config = {
         'image': {'img': 'src'}
     },
     'filters': {
-        'enable': True,
+        'enable': False,
         'tags': [ 'amazonaws.com', 'herokuapp.com', 'netlify.app', 'storage.googleapis.com', 'zendesk.com', 'fastly.net', 'readme.io', 'myshopify.com', 'surge.sh', 'mystrikingly.com']
     },
     'request': {

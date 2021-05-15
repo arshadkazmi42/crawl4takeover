@@ -90,6 +90,13 @@ class Helper:
         headers = global_config['request']['headers']
         return requests.get(url, headers=headers, timeout=10)
 
+    
+    @classmethod
+    def request_head(cls, url):
+
+        headers = global_config['request']['headers']
+        return requests.head(url, headers=headers, timeout=10)
+
 
     @classmethod
     def get_url_result(cls, url):
@@ -114,7 +121,7 @@ class Helper:
     @classmethod
     def get_status_code(cls, url):
         try:
-            response = cls.request(url)
+            response = cls.request_head(url)
             return response.status_code
         except:
             print(f'Error getting status code of {url}')
@@ -171,7 +178,7 @@ class Helper:
         # Remove starting and ending quotes
         url = cls.clean_url(url)
 
-        if url.startswith('javascript:') or url.startswith('mailto:') or url.startswith('#'):
+        if url.startswith('javascript:') or url.startswith('mailto:') or url.startswith('#') or url.startswith('data:image/'):
             return None
 
         # Ignore forum and community urls
@@ -183,6 +190,7 @@ class Helper:
             return None
 
         # TODO Create a config for this
+        # https://rollbar-us.zendesk.com/api/1/item/
         if url.startswith('https://firebasestorage.googleapis.com'):
             return None
 
